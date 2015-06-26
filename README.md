@@ -1,2 +1,2 @@
-# project-euler
+# projecteuler
 https://projecteuler.net/
