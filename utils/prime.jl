@@ -4,3 +4,13 @@ function isPrime(n)
   end
   return true
 end
+
+function nextPrime()
+  currentPrime = 1
+  helper = function ()
+    while true
+      currentPrime += 1
+      isPrime(currentPrime) && return currentPrime
+    end
+  end
+end
