@@ -1,29 +1,23 @@
 include("prime.jl")
 
+# There is actually a built-in factor method, but I didn't find out about it until I implemented brent
+# I'll probably switch to the built-in version in the future
 function findFactor(n)
   return brent(n)
 end
 
+# http://rosettacode.org/wiki/Factors_of_an_integer#Julia
 function findAllFactors(n)
-  factors = [1, n]
-  while true
-    currentFactor = findFactor(n)
-    currentFactor == n && (currentFactor = findFactor(n))
-    currentFactor == n && (currentFactor = findFactor(n))
-    if isPrime(currentFactor)
-      push!(factors, currentFactor)
-    else
-      append!(factors, findAllFactors(currentFactor))
-    end
-    currentFactor == n && break
-    n /= currentFactor
+  f = [one(n)]
+  for (p,e) in factor(n)
+    f = reduce(vcat, f, [f*p^j for j in 1:e])
   end
-  sort!(factors)
-  return factors
+  return length(f) == 1 ? [one(n), n] : sort!(f)
 end
 
 
 function brent(n)
+  n<2 && return n
   n%2==0 && return 2
 
   y,c,m = rand(1:n-1),rand(1:n-1),rand(1:n-1)
